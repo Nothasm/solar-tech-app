@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  backend:
+    build: './backend'
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: 'mongodb://db:27017/example'
+      PORT: 3003
+      SMTP_TRANSPORT_URL: 'smtp://USER:PASSWORD@HOST:587'
+      EMAIL_TARGET: 'EMAIL_RECEBER_NOTIFICAÇÃO'
+    depends_on:
+      - db
+    ports:
+      - '3003:3003'
+  client:
+    build: './client'
+    depends_on:
+      - backend
+    ports:
+      - '8080:8080'
+  db:
+    image: mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
